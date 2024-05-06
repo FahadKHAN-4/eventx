@@ -22,24 +22,26 @@ interface CollectedStampInfo {
 }
 
 interface GiftData extends StampData {
-    collectedStamps?: string[];
+    collectedStamps: string[];
+    isEligibleForGift: boolean;
+    redeemedAt: string | null;
 }
 
 const Main: React.FC = () => {
     const { getAllStaticData, getCollectedStampsData } = useUserContext();
-    // Explicitly set the type of state to GiftData[]
-    const [giftData, setGiftData] = useState<GiftData[]>([]);
+    const [giftData, setGiftData] = useState<GiftData[]>([]); 
 
     useEffect(() => {
         const stampData = getAllStaticData();
         const collectedData = getCollectedStampsData();
 
-        // Merge the static stamp data with dynamic collected stamps data
-        const mergedData = stampData.map(stamp => {
+        const mergedData = stampData.map((stamp): GiftData => {
             const collectedInfo = collectedData.find(collected => collected.categoryName === stamp.category.name);
             return {
                 ...stamp,
-                collectedStamps: collectedInfo ? collectedInfo.collectedStamps : undefined
+                collectedStamps: collectedInfo ? collectedInfo.collectedStamps : [],
+                isEligibleForGift: collectedInfo ? collectedInfo.isEligibleForGift : false,
+                redeemedAt: collectedInfo ? collectedInfo.redeemedAt : null
             };
         });
 
@@ -64,6 +66,8 @@ const Main: React.FC = () => {
                         requiredStampCount={gift.requiredStampCount}
                         description={gift.description}
                         collectedStamps={gift.collectedStamps}
+                        isEligibleForGift={gift.isEligibleForGift}
+                        redeemedAt={gift.redeemedAt}
                     />
                 ))}
             </div>

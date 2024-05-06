@@ -1,28 +1,31 @@
-// Gift.tsx
 import React, { useState } from 'react';
 import './Gift.css';
-import { useUserContext } from './UserContext';
 import Button from './Button';
+import { useUserContext } from './UserContext'; 
 
 interface GiftProps {
     imgUrl: string;
     name: string;
     requiredStampCount: number;
     description: string;
-    collectedStamps?: string[];
+    collectedStamps: string[];
+    isEligibleForGift: boolean;
+    redeemedAt: string | null;
 }
 
-const Gift: React.FC<GiftProps> = ({ imgUrl, name, requiredStampCount, description, collectedStamps }) => {
-    const { redeemGift, attendeeId } = useUserContext();
-    const [isRedeemed, setIsRedeemed] = useState(false);
+const Gift: React.FC<GiftProps> = ({imgUrl,name,requiredStampCount,description,collectedStamps,isEligibleForGift,redeemedAt: initialRedeemedAt}) => {
+
+    const { redeemGift, attendeeId } = useUserContext(); 
+    const [redeemedAt, setRedeemedAt] = useState(initialRedeemedAt);
 
     const handleRedeemClick = async () => {
-        if (collectedStamps && collectedStamps.length >= requiredStampCount) {
+        if (!redeemedAt && isEligibleForGift) {
             try {
                 await redeemGift({ attendeeId, categoryName: name });
-                setIsRedeemed(true);
+                setRedeemedAt(new Date().toISOString()); 
+                console.log("Redemption successful");
             } catch (error) {
-                console.error('Redemption failed:', error);
+                console.error("Failed to redeem gift:", error);
             }
         }
     };
@@ -37,19 +40,15 @@ const Gift: React.FC<GiftProps> = ({ imgUrl, name, requiredStampCount, descripti
                 </div>
             </div>
             <div className="bottom">
-                <p>Collected ({collectedStamps?.length ?? 0}/{requiredStampCount}):</p>
-                {collectedStamps && collectedStamps.length > 0 ? (
-                    <p>{collectedStamps.join(', ')}</p>
-                ) : (
-                    <p>No stamps collected yet.</p>
-                )}
+                <p>Collected ({collectedStamps.length}/{requiredStampCount}):</p>
+                <p>{collectedStamps.length > 0 ? collectedStamps.join(', ') : "No stamps collected yet."}</p>
             </div>
             <div className="button">
-                <Button
-                    label={isRedeemed ? "Already Redeemed" : collectedStamps && collectedStamps.length >= requiredStampCount ? "Eligible For Gift" : "Need More Stamps"}
+                <Button 
+                    label={redeemedAt ? "Gift Redeemed" : isEligibleForGift ? "Eligible For Prize" : "Need More Stamps"}
                     onClick={handleRedeemClick}
-                    isDisabled={isRedeemed || !collectedStamps || collectedStamps.length < requiredStampCount}
-                    type={isRedeemed ? 'redeemed' : collectedStamps && collectedStamps.length >= requiredStampCount ? 'redeem' : 'moreStamps'}
+                    isDisabled={!isEligibleForGift || redeemedAt !== null}
+                    type={redeemedAt ? 'redeemed' : isEligibleForGift ? 'redeem' : 'moreStamps'}
                 />
             </div>
         </div>
