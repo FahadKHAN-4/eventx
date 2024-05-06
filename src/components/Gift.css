@@ -1,0 +1,52 @@
+/* Styles for the Gift component */
+.gift-wrapper {
+    width: 352px;
+    height: 240px;
+    border: none;
+    border-radius: 8px;
+    padding-top: 20px;
+    overflow: hidden;
+    margin: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: rgb(128, 43, 255);
+}
+
+.gift-wrapper .top, .gift-wrapper .bottom {
+    padding: 10px;
+    text-align: left; /* Aligns text to the left */
+}
+
+.gift-wrapper .top {
+    display: flex;
+    align-items: center;
+}
+
+.gift-wrapper .top img {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+.gift-wrapper .top p, .gift-wrapper .bottom p {
+    margin: 0;
+    line-height: 1.4;
+    color: white;
+}
+
+.gift-wrapper .button {
+    text-align: center;
+    padding: 10px;
+}
+
+.gift-wrapper .button button {
+    border-radius: 20px;
+    border: none;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+}
