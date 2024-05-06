@@ -45,7 +45,7 @@ const Gift: React.FC<GiftProps> = ({imgUrl,name,requiredStampCount,description,c
             </div>
             <div className="button">
                 <Button 
-                    label={redeemedAt ? "Gift Redeemed" : isEligibleForGift ? "Eligible For Prize" : "Need More Stamps"}
+                    label={redeemedAt ? "Already Redeemed" : isEligibleForGift ? "Eligible For Gift" : "Need More Stamps"}
                     onClick={handleRedeemClick}
                     isDisabled={!isEligibleForGift || redeemedAt !== null}
                     type={redeemedAt ? 'redeemed' : isEligibleForGift ? 'redeem' : 'moreStamps'}
