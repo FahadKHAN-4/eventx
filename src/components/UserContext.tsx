@@ -1,5 +1,7 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 
+const API_BASE_URL = 'https://test-api-url.com'; 
+
 interface Category {
     name: string;
     iconUrl: string;
@@ -18,9 +20,16 @@ interface CollectedStampInfo {
     redeemedAt: string | null;
 }
 
+interface RedeemStampBody {
+  attendeeId: string;
+  categoryName: string;
+}
+
 interface UserContextType {
     getAllStaticData: () => StampData[];
     getCollectedStampsData: () => CollectedStampInfo[];
+    redeemGift: (params: RedeemStampBody) => Promise<void>;
+    attendeeId: string;  // Adding attendeeId here
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -38,6 +47,8 @@ interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+    const attendeeId = "134b3437-b522-4b0c-bb2c-e42cab930571";  // Define your constant attendeeId here
+
     const getAllStaticData = (): StampData[] => [
         {
             category: {
@@ -66,6 +77,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     ];
 
     const getCollectedStampsData = (): CollectedStampInfo[] => [
+        // Your collected stamps data...
         {
             categoryName: "Sponsor Booth",
             collectedStamps: ["Booth 1", "Booth 2", "Booth 3", "Booth 4", "Booth 5", "Booth 6", "Booth 7"],
@@ -86,11 +98,24 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     ];
 
+    async function redeemGift({ attendeeId, categoryName }: RedeemStampBody): Promise<void> {
+      const body = JSON.stringify({ categoryName });
+    //   return fetch(`${API_BASE_URL}/api/stamp/${attendeeId}/redeem`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'Accept': 'application/json',
+    //     },
+    //     body,
+    //   });
+    }
+
     return (
-        <UserContext.Provider value={{ getAllStaticData, getCollectedStampsData }}>
+        <UserContext.Provider value={{ getAllStaticData, getCollectedStampsData, redeemGift, attendeeId }}>
             {children}
         </UserContext.Provider>
     );
 };
 
 export default UserProvider;
+

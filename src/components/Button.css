@@ -1,0 +1,32 @@
+.gift-wrapper .button button {
+    border-radius: 20px;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+
+.gift-wrapper .button button.redeem {
+    background-color: white;
+    color: rgb(128, 43, 255);
+}
+
+.gift-wrapper .button button.redeemed {
+    background-color: rgb(128, 43, 255);  
+    border: 1px solid white;
+    color: white;
+     
+}
+
+.gift-wrapper .button button.moreStamps {
+    border: none;
+    background-color: rgb(128, 43, 255);  
+    color: white; 
+}
+
+.gift-wrapper .button {
+    text-align: center;
+    padding: 10px;
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useUserContext } from './UserContext';
 import Gift from './Gift';
+import './main.css';
 
 interface Category {
     name: string;
@@ -47,7 +48,13 @@ const Main: React.FC = () => {
 
     return (
         <div className="main-container">
-            <h1>Stamp Collection</h1>
+            <div className='stampheader'>
+                <h1>Stamp Collection</h1>
+                <div>
+                    <i className="fa-solid fa-rotate-right"></i>
+                    <i className="fa-solid fa-xmark"></i>
+                </div>
+            </div>
             <div className="gifts-container">
                 {giftData.map((gift, index) => (
                     <Gift
